@@ -1,1 +1,4 @@
 runner.o
+SBIN.csv
+order_statistics.csv
+daily_pnl.csv
