@@ -1,3 +1,6 @@
+#ifndef LINEAR_REGRESSION_H
+#define LINEAR_REGRESSION_H
+
 #include "Strategy.h"
 
 class LinearRegression : public Strategy
@@ -18,3 +21,4 @@ class LinearRegression : public Strategy
     double _max_position, _percent_diff;
 };
 
+#endif

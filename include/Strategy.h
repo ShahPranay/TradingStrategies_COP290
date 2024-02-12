@@ -1,3 +1,6 @@
+#ifndef STRATEGY_H
+#define STRATEGY_H
+
 #include <string>
 #include <vector>
 #include <sstream>
@@ -39,3 +42,4 @@ class Strategy
     std::vector<StockData> _stock_data;
     double _final_pnl;
 };
+#endif
