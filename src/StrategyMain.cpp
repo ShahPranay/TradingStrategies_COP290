@@ -5,6 +5,7 @@
 #include "MACD.h"
 #include "RSI.h"
 #include "ADX.h"
+#include "PAIRS.h"
 #include <string>
 #include <iostream>
 
@@ -16,7 +17,7 @@ int main(int argc, char *argv[]) {
 
   // Extract command line arguments
   std::string strategy = argv[1];
-  std::string symbol = argv[2];
+  
 
   if (strategy == "LinearRegression")
   {
@@ -25,6 +26,7 @@ int main(int argc, char *argv[]) {
         train_start_date train_end_date start_date end_date";
       return 1;
     }
+    std::string symbol = argv[2];
     int x = std::stoi(argv[3]);
     double p = std::stod(argv[4]);
     std::string train_start_date = argv[5], train_end_date = argv[6], start_date = argv[7], end_date = argv[8];
@@ -38,6 +40,7 @@ int main(int argc, char *argv[]) {
         start_date end_date";
       return 1;
     }
+    std::string symbol = argv[2];
     int n = std::stoi(argv[6]);
     int x = std::stoi(argv[3]);
     std::string start_date = argv[4], end_date = argv[5];
@@ -51,6 +54,7 @@ int main(int argc, char *argv[]) {
         start_date end_date";
       return 1;
     }
+    std::string symbol = argv[2];
     int n = std::stoi(argv[6]);
     int x = std::stoi(argv[3]);
     int p = std::stoi(argv[7]); 
@@ -64,6 +68,7 @@ int main(int argc, char *argv[]) {
         max_hold_days start_date end_date c1 c2";
       return 1;
     }
+    std::string symbol = argv[2];
     int n = std::stoi(argv[6]);
     int x = std::stoi(argv[3]);
     int p = std::stoi(argv[7]);
@@ -81,6 +86,7 @@ int main(int argc, char *argv[]) {
         start_date end_date";
       return 1;
     }
+    std::string symbol = argv[2];
     int x = std::stoi(argv[3]);
     std::string start_date = argv[4], end_date = argv[5];
     Strategy *strat = (Strategy *) new MACD(symbol, start_date, end_date, x);
@@ -93,6 +99,7 @@ int main(int argc, char *argv[]) {
         oversold_threshold overbought_threshold start_date end_date";
       return 1;
     }
+    std::string symbol = argv[2];
     int n = std::stoi(argv[6]);
     int x = std::stoi(argv[3]);
     double oversold_threshold = std::stod(argv[7]);
@@ -108,6 +115,7 @@ int main(int argc, char *argv[]) {
         adx_threshold start_date end_date";
       return 1;
     }
+    std::string symbol = argv[2];
     int n = std::stoi(argv[6]);
     int x = std::stoi(argv[3]);
     double adx_threshold = std::stod(argv[7]);
@@ -115,6 +123,23 @@ int main(int argc, char *argv[]) {
     Strategy *strat = (Strategy *) new ADX(symbol, start_date, end_date, n, x, adx_threshold);
     strat->runStrategy();
   }
+  else if(strategy == "PAIRS")
+  {
+    if (argc < 9) {
+      std::cerr << "Usage: " << argv[0] << " strategy symbol1 symbol2 n x \
+        start_date end_date threshold";
+      return 1;
+    }
+    std::string symbol1 = argv[2];
+    std::string symbol2 = argv[3];
+    int n = std::stoi(argv[7]);
+    int x = std::stoi(argv[4]);
+    double threshold = std::stod(argv[8]);
+    std::string start_date = argv[5], end_date = argv[6];
+    Strategy *strat = (Strategy *) new PAIRS(symbol1, symbol2, start_date, end_date, n, x, threshold);
+    strat->runStrategy();
+  }
+  
   
   
 
