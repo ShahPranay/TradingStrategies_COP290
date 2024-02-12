@@ -1,4 +1,5 @@
 runner.o
 SBIN.csv
+ADANIENT.csv
 order_statistics.csv
 daily_pnl.csv
