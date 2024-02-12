@@ -9,14 +9,15 @@ DMA::DMA (std::string symbol,
         int x,
         int p) : 
 
-  Strategy(symbol),
+  Strategy(),
+  _symbol(symbol),
   _start_date(start_date),
   _end_date(end_date),
   _n(n),
   _x(x),
   _p(p)
 {
-  fetchStockData(_start_date, _end_date, _n-1);
+  _stock_data = fetchStockData(_symbol, _start_date, _end_date, _n-1);
 }
 
 void DMA::runStrategy()

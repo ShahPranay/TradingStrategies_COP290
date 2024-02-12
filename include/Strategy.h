@@ -11,35 +11,33 @@ struct StockData {
   double close;
   double high;
   double low;
-  double ltp;
-  double volume;
-  double value;
-  double prevClose;
+  double vwap;
   int numTrades;
 };
 
 class Strategy
 {
   public:
-    Strategy(std::string symbol);
+    Strategy();
     /* ~Strategy() {  }; */
 
     std::string convertDateFormat(const std::string& str);
-    void fetchStockData(std::string start_date, std::string end_date, int n); // rename n with a meaningfull name
+    std::vector<StockData> fetchStockData(std::string symbol, std::string start_date, std::string end_date, int n); // rename n with a meaningfull name
                                                                               //
     void writeOrderStats(std::string date, bool is_buy, int quantity, int price);
     void writeOrderStats(const StockData &stk, bool is_buy, int quantity);
+    void writeOrderStats2(std::string date, bool is_buy, int quantity, int price);
+    void writeOrderStats2(const StockData &stk, bool is_buy, int quantity);
     void writeDailyCashFlow(std::string date, double cashflow);
 
     void writeToPNLFile(double pnl); 
     void writeToFiles();
+    void writeTo2Files();
 
     virtual void runStrategy() = 0; // calculates the _final_pnl and stores it.
 
   protected:
-    std::string _symbol;
-    std::ostringstream _daily_cashflow, _order_statistics;
-    std::vector<StockData> _stock_data;
+    std::ostringstream _daily_cashflow, _order_statistics, _order_statistics_2;
     double _final_pnl;
 };
 #endif

@@ -6,12 +6,13 @@ MACD::MACD (std::string symbol,
         std::string end_date, 
         int x) : 
 
-  Strategy(symbol),
+  Strategy(),
+  _symbol(symbol),
   _start_date(start_date),
   _end_date(end_date),
   _x(x)
 {
-  fetchStockData(_start_date, _end_date, 0);
+  _stock_data = fetchStockData(_symbol, _start_date, _end_date, 0);
 }
 
 void MACD::runStrategy()

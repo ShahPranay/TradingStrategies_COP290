@@ -9,7 +9,8 @@ RSI::RSI (std::string symbol,
         double oversold_threshold, 
         double overbought_threshold) : 
 
-  Strategy(symbol),
+  Strategy(),
+  _symbol(symbol),
   _start_date(start_date),
   _end_date(end_date),
   _n(n),
@@ -17,7 +18,7 @@ RSI::RSI (std::string symbol,
   _oversold_threshold(oversold_threshold),
   _overbought_threshold(overbought_threshold)
 {
-  fetchStockData(_start_date, _end_date, _n);
+  _stock_data = fetchStockData(_symbol, _start_date, _end_date, _n);
 }
 
 void RSI::runStrategy()

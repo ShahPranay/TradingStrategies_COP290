@@ -9,7 +9,8 @@ LinearRegression::LinearRegression (std::string symbol,
     double max_position,
     double percent_diff) : 
 
-  Strategy(symbol),
+  Strategy(),
+  _symbol(symbol),
   _train_start_date(train_start_date),
   _train_end_date(train_end_date),
   _test_start_date(start_date),
@@ -17,7 +18,7 @@ LinearRegression::LinearRegression (std::string symbol,
   _max_position(max_position),
   _percent_diff(percent_diff)
 {
-  fetchStockData(_train_start_date, _train_end_date, 0);
+  _stock_data = fetchStockData(_symbol, _train_start_date, _train_end_date, 0);
 }
 
 void LinearRegression::runStrategy()

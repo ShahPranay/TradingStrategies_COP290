@@ -14,8 +14,9 @@ class MACD : public Strategy
     virtual void runStrategy();
 
   private:
-    std::string _start_date, _end_date;
+    std::string _symbol, _start_date, _end_date;
     int _x;
+    std::vector<StockData> _stock_data;
 };
 
 #endif

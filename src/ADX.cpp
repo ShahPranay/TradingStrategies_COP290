@@ -8,14 +8,15 @@ ADX::ADX (std::string symbol,
         int x,
         double adx_threshold) : 
 
-  Strategy(symbol),
+  Strategy(),
+  _symbol(symbol),
   _start_date(start_date),
   _end_date(end_date),
   _n(n),
   _x(x),
   _adx_threshold(adx_threshold)
 {
-  fetchStockData(_start_date, _end_date, 2);
+  _stock_data = fetchStockData(_symbol, _start_date, _end_date, 2);
 }
 
 void ADX::runStrategy()

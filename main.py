@@ -47,7 +47,7 @@ if __name__ == "__main__":
             i-=n
             df = df.iloc[i:]
             
-    required_columns = ['DATE', 'OPEN', 'CLOSE', 'HIGH', 'LOW', 'LTP', 'VOLUME', 'VALUE', 'PREV. CLOSE', 'NO OF TRADES' ]
+    required_columns = ['DATE', 'OPEN', 'CLOSE', 'HIGH', 'LOW', 'VWAP', 'NO OF TRADES' ]
     df = df[required_columns]
         
     # Save data from df to csv

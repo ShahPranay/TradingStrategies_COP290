@@ -17,8 +17,9 @@ class LinearRegression : public Strategy
     virtual void runStrategy();
 
   private:
-    std::string _train_start_date, _train_end_date, _test_start_date, _test_end_date;
+    std::string _symbol, _train_start_date, _train_end_date, _test_start_date, _test_end_date;
     double _max_position, _percent_diff;
+    std::vector<StockData> _stock_data;
 };
 
 #endif
