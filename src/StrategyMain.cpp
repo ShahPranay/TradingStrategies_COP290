@@ -30,8 +30,10 @@ int main(int argc, char *argv[]) {
     int x = std::stoi(argv[3]);
     double p = std::stod(argv[4]);
     std::string train_start_date = argv[5], train_end_date = argv[6], start_date = argv[7], end_date = argv[8];
+
     Strategy *strat = (Strategy *) new LinearRegression(symbol, train_start_date, train_end_date, start_date, end_date, x, p);
     strat->runStrategy();
+    strat->writeToFiles();
   }
   else if(strategy == "BASIC")
   {
@@ -139,9 +141,6 @@ int main(int argc, char *argv[]) {
     Strategy *strat = (Strategy *) new PAIRS(symbol1, symbol2, start_date, end_date, n, x, threshold);
     strat->runStrategy();
   }
-  
-  
-  
 
   return 0;
 }

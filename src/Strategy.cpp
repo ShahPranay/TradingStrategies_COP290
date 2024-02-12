@@ -73,7 +73,7 @@ std::vector<StockData> Strategy::fetchStockData(std::string symbol, std::string 
 
 void Strategy::writeToPNLFile(double pnl)
 {
-  std::ofstream finalPnLFile("final_pnl.txt");
+  std::ofstream finalPnLFile("final_pnl.txt", std::ofstream::trunc);
   if (!finalPnLFile.is_open()) {
     std::cerr << "Error: Failed to open file for writing\n";
     return;
@@ -116,8 +116,8 @@ void Strategy::writeDailyCashFlow(std::string date, double cashflow)
 
 void Strategy::writeToFiles()
 {
-  std::ofstream cash_flow_file("daily_pnl.csv");
-  std::ofstream order_statistics_file("order_statistics.csv");
+  std::ofstream cash_flow_file("daily_pnl.csv", std::ofstream::trunc);
+  std::ofstream order_statistics_file("order_statistics.csv", std::ofstream::trunc);
 
   if (!cash_flow_file.is_open() || !order_statistics_file.is_open()) {
     std::cerr << "Error: Failed to open files for writing\n";
@@ -129,6 +129,8 @@ void Strategy::writeToFiles()
 
   cash_flow_file.close();
   order_statistics_file.close();
+
+  writeToPNLFile(_final_pnl);
 }
 
 void Strategy::writeTo2Files()
