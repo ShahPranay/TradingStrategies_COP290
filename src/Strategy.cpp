@@ -118,7 +118,7 @@ void Strategy::writeDailyCashFlow(std::string date, double cashflow)
 
 void Strategy::writeToFiles()
 {
-  std::ofstream cash_flow_file("daily_pnl.csv", std::ofstream::trunc);
+  std::ofstream cash_flow_file("daily_cashflow.csv", std::ofstream::trunc);
   std::ofstream order_statistics_file("order_statistics.csv", std::ofstream::trunc);
 
   if (!cash_flow_file.is_open() || !order_statistics_file.is_open()) {
