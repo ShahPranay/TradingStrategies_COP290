@@ -17,7 +17,7 @@ DMA::DMA (std::string symbol,
   _x(x),
   _p(p)
 {
-  _stock_data = fetchStockData(_symbol, _start_date, _end_date, _n-1);
+  _stock_data = fetchStockData(_symbol, _start_date, _end_date, _n-1, "DMA");
 }
 
 void DMA::runStrategy()

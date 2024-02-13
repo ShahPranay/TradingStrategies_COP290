@@ -53,6 +53,7 @@ Matrix<T>::Matrix(const Matrix&& other) : _rows(other._rows), _cols(other._cols)
 template<typename T>
 const T& Matrix<T>::get(int i, int j) const {
     if (i < 0 || i >= _rows || j < 0 || j >= _cols) {
+      std::cerr << "Matrix error" << std::endl;
         throw std::out_of_range("Index out of range");
     }
     return _data[i * _cols + j];
@@ -61,6 +62,7 @@ const T& Matrix<T>::get(int i, int j) const {
 template<typename T>
 void Matrix<T>::set(int i, int j, T val) {
     if (i < 0 || i >= _rows || j < 0 || j >= _cols) {
+      std::cerr << "Matrix error" << std::endl;
         throw std::out_of_range("Index out of range");
     }
     _data[i * _cols + j] = val;
@@ -69,6 +71,7 @@ void Matrix<T>::set(int i, int j, T val) {
 template<typename T>
 void Matrix<T>::setRow(int i, const Matrix<T> &rowdata){
   if(i < 0 || i >= _rows || rowdata._rows != 1 || rowdata._cols != _cols){
+      std::cerr << "Matrix error" << std::endl;
     throw std::out_of_range("Index out of range");
   }
   for(int j = 0; j < _cols; j++){
@@ -92,6 +95,7 @@ Matrix<T> Matrix<T>::transpose() const {
 template<typename T>
 Matrix<T> Matrix<T>::multiply(const Matrix<T>& other) const {
     if (_cols != other._rows) {
+      std::cerr << "Matrix error" << std::endl;
         throw std::invalid_argument("Matrices are not multipliable");
     }
 
@@ -112,7 +116,8 @@ Matrix<T> Matrix<T>::multiply(const Matrix<T>& other) const {
 template<typename T>
 Matrix<T> Matrix<T>::inverse() const {
     if (_rows != _cols) {
-        throw std::invalid_argument("Matrix is not square");
+      std::cerr << "Matrix error" << std::endl;
+      throw std::invalid_argument("Matrix is not square");
     }
 
     // Augmenting the original matrix with an identity matrix
@@ -129,6 +134,7 @@ Matrix<T> Matrix<T>::inverse() const {
         // Scaling the current row to make the pivot element 1
         T pivot = augmented.get(i, i);
         if (pivot == 0) {
+      std::cerr << "Matrix error" << std::endl;
             throw std::runtime_error("Matrix is not invertible");
         }
         for (int j = i; j < _cols * 2; ++j) {

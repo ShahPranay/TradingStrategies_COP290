@@ -23,7 +23,7 @@ AMA::AMA (std::string symbol,
   _c1(c1),
   _c2(c2)
 {
-  _stock_data = fetchStockData(_symbol, _start_date, _end_date, _n);
+  _stock_data = fetchStockData(_symbol, _start_date, _end_date, _n, "AMA");
 }
 
 void AMA::runStrategy()

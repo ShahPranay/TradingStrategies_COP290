@@ -21,8 +21,8 @@ class Strategy
     Strategy();
     /* ~Strategy() {  }; */
 
-    std::string convertDateFormat(const std::string& str);
-    std::vector<StockData> fetchStockData(std::string symbol, std::string start_date, std::string end_date, int n); // rename n with a meaningfull name
+    static std::string convertDateFormat(const std::string& str);
+    static std::vector<StockData> fetchStockData(std::string symbol, std::string start_date, std::string end_date, int n, std::string filename); // rename n with a meaningfull name
                                                                               //
     void writeOrderStats(std::string date, bool is_buy, int quantity, int price);
     void writeOrderStats(const StockData &stk, bool is_buy, int quantity);
@@ -33,6 +33,8 @@ class Strategy
     void writeToPNLFile(double pnl); 
     void writeToFiles();
     void writeTo2Files();
+
+    double getFinalPnl();
 
     virtual void runStrategy() = 0; // calculates the _final_pnl and stores it.
 

@@ -4,8 +4,8 @@ from jugaad_data.nse import stock_df
     
 
 if __name__ == "__main__":
-    if len(sys.argv) != 5:
-        print("Usage: python main.py SYMBOL n start_date end_date")
+    if len(sys.argv) != 6:
+        print("Usage: python main.py SYMBOL n start_date end_date filename")
         sys.exit(1)
 
     symbol = sys.argv[1]
@@ -14,6 +14,7 @@ if __name__ == "__main__":
     to_date = sys.argv[4]
     from_date = datetime.strptime(from_date, "%d/%m/%Y")
     to_date = datetime.strptime(to_date, "%d/%m/%Y")
+    filename = sys.argv[5]
 
     x = n/2
     new_from_date = from_date - timedelta(days=n+x)
@@ -51,4 +52,4 @@ if __name__ == "__main__":
     df = df[required_columns]
         
     # Save data from df to csv
-    df.to_csv(symbol+".csv", index=False)
+    df.to_csv(filename+".csv", index=False)

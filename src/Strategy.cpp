@@ -21,12 +21,13 @@ std::string Strategy::convertDateFormat(const std::string& originalDate) {
   return convertedDate;
 }
 
-std::vector<StockData> Strategy::fetchStockData(std::string symbol, std::string start_date, std::string end_date, int n)
+std::vector<StockData> Strategy::fetchStockData(std::string symbol, std::string start_date, std::string end_date, int n, std::string filename = "data")
 {
-  std::string command = "python3 main.py " + symbol + " " + std::to_string(n) + " " + start_date + " " + end_date;
+  std::string filepath = "./data/" + filename + "_" + symbol;
+  std::string command = "python3 main.py " + symbol + " " + std::to_string(n) + " " + start_date + " " + end_date + " " + filepath;
   system(command.c_str());
 
-  std::ifstream csvFile(symbol + ".csv");
+  std::ifstream csvFile(filepath + ".csv");
 
   if (!csvFile.is_open()) {
     std::cerr << "Error: Failed to open CSV file\n";
@@ -73,7 +74,7 @@ std::vector<StockData> Strategy::fetchStockData(std::string symbol, std::string 
 
 void Strategy::writeToPNLFile(double pnl)
 {
-  std::ofstream finalPnLFile("final_pnl.txt", std::ofstream::trunc);
+  std::ofstream finalPnLFile("./results/final_pnl.txt", std::ofstream::trunc);
   if (!finalPnLFile.is_open()) {
     std::cerr << "Error: Failed to open file for writing\n";
     return;
@@ -116,8 +117,8 @@ void Strategy::writeDailyCashFlow(std::string date, double cashflow)
 
 void Strategy::writeToFiles()
 {
-  std::ofstream cash_flow_file("daily_pnl.csv", std::ofstream::trunc);
-  std::ofstream order_statistics_file("order_statistics.csv", std::ofstream::trunc);
+  std::ofstream cash_flow_file("./results/daily_pnl.csv", std::ofstream::trunc);
+  std::ofstream order_statistics_file("./results/order_statistics.csv", std::ofstream::trunc);
 
   if (!cash_flow_file.is_open() || !order_statistics_file.is_open()) {
     std::cerr << "Error: Failed to open files for writing\n";
@@ -135,9 +136,9 @@ void Strategy::writeToFiles()
 
 void Strategy::writeTo2Files()
 {
-  std::ofstream cash_flow_file("daily_pnl.csv");
-  std::ofstream order_statistics_file1("order_statistics1.csv");
-  std::ofstream order_statistics_file2("order_statistics2.csv");
+  std::ofstream cash_flow_file("./results/daily_pnl.csv");
+  std::ofstream order_statistics_file1("./results/order_statistics1.csv");
+  std::ofstream order_statistics_file2("./results/order_statistics2.csv");
 
   if (!cash_flow_file.is_open() || !order_statistics_file1.is_open() || !order_statistics_file2.is_open()) {
     std::cerr << "Error: Failed to open files for writing\n";
@@ -151,4 +152,11 @@ void Strategy::writeTo2Files()
   cash_flow_file.close();
   order_statistics_file1.close();
   order_statistics_file2.close();
+
+  writeToPNLFile(_final_pnl);
+}
+
+double Strategy::getFinalPnl()
+{
+  return _final_pnl;
 }

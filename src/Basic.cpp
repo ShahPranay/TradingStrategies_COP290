@@ -14,7 +14,7 @@ Basic::Basic (std::string symbol,
   _n(n),
   _x(x)
 {
-  _stock_data = fetchStockData(_symbol, _start_date, _end_date, _n);
+  _stock_data = fetchStockData(_symbol, _start_date, _end_date, _n, "Basic");
 }
 
 void Basic::runStrategy()

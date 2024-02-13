@@ -18,9 +18,8 @@ LinearRegression::LinearRegression (std::string symbol,
   _test_end_date(end_date),
   _max_position(max_position),
   _percent_diff(percent_diff)
-{
-  _train_stock_data = fetchStockData(_symbol, _train_start_date, _train_end_date, 0);
-  _stock_data = fetchStockData(_symbol, _test_start_date, _test_end_date, 1);
+{ _train_stock_data = fetchStockData(_symbol, _train_start_date, _train_end_date, 0, "LR_train");
+  _stock_data = fetchStockData(_symbol, _test_start_date, _test_end_date, 1, "LR_test");
 }
 
 Matrix<double> LinearRegression::stockDataToMat(const StockData& prevday_stk, const StockData& today_stk)
@@ -40,12 +39,12 @@ Matrix<double> LinearRegression::stockDataToMat(const StockData& prevday_stk, co
 }
 
 double LinearRegression::percentDifference(double prediction, double actual_price){
-  std::cerr << "Prediction: " << prediction << ", Actual: " << actual_price << std::endl;
+  /* std::cerr << "Prediction: " << prediction << ", Actual: " << actual_price << std::endl; */
   return ((prediction - actual_price) / actual_price) * 100;
 }
 
 void LinearRegression::buyStock(const StockData& today_stk){
-  if(_cur_position >= _max_position)
+  if(_cur_position > _max_position)
     return;
   _cur_position++;
   writeOrderStats(today_stk, true, 1);
@@ -53,7 +52,7 @@ void LinearRegression::buyStock(const StockData& today_stk){
 }
 
 void LinearRegression::sellStock(const StockData& today_stk){
-  if(_cur_position <= _max_position)
+  if(_cur_position < -_max_position)
     return;
   _cur_position--;
   writeOrderStats(today_stk, false, 1);
@@ -67,17 +66,16 @@ void LinearRegression::runStrategy()
 
   for(int i = 0; i < n_traindata - 1; i++){
     X.setRow(i, stockDataToMat(_train_stock_data[i], _train_stock_data[i + 1]));
-    y.set(i, 0, _train_stock_data[i + 1].open);
+    y.set(i, 0, _train_stock_data[i + 1].close);
   }
 
   Matrix<double> X_t = X.transpose();
-  Matrix<double> params = (X_t * X).inverse() * X_t * y;
-
-  Matrix<double> params_t = params.transpose();
+  Matrix<double> params = (X_t * X).inverse() * (X_t * y);
 
   int n_testdata = _stock_data.size();
 
   _final_pnl = 0.0;
+  _cur_position = 0;
   for(int i = 1; i < n_testdata; i++){
     Matrix<double> prediction = stockDataToMat(_stock_data[i - 1], _stock_data[i]) * params;
     double pdiff = percentDifference(prediction.get(0,0), _stock_data[i].close);
@@ -85,7 +83,7 @@ void LinearRegression::runStrategy()
     if(pdiff > 0 && pdiff >= _percent_diff){
       buyStock(_stock_data[i]);
     }
-    else if(pdiff < 0 && abs(pdiff) >= _percent_diff){
+    else if(pdiff < 0 && -pdiff >= _percent_diff){
       sellStock(_stock_data[i]);
     }
     writeDailyCashFlow(_stock_data[i].date, _final_pnl);
