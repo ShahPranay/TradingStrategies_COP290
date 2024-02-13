@@ -144,7 +144,7 @@ int main(int argc, char *argv[]) {
     std::string start_date = argv[6], end_date = argv[7];
     Strategy *strat = (Strategy *) new PAIRS(symbol1, symbol2, start_date, end_date, n, x, threshold);
     strat->runStrategy();
-    
+    strat->writeTo2Files();
   }
   else if(strategy == "PAIRS" && argc==10){
     std::string symbol1 = argv[2];
@@ -156,8 +156,9 @@ int main(int argc, char *argv[]) {
     std::string start_date = argv[6], end_date = argv[7];
     Strategy *strat = (Strategy *) new PAIRS2(symbol1, symbol2, start_date, end_date, n, x, threshold, stop_loss_threshold);
     strat->runStrategy();
+    strat->writeTo2Files();
   }
-  else if(strategy == "BestOfAll")
+  else if(strategy == "BEST_OF_ALL")
   {
     if (argc < 5){
       std::cerr << "Usage: " << argv[0] << " strategy symbol start_date end_date";

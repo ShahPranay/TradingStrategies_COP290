@@ -24,8 +24,8 @@ PAIRS2::PAIRS2 (std::string symbol1,
   _threshold(threshold),
   _stop_loss_threshold(stop_loss_threshold)
 {
-  _stock_data1 = fetchStockData(_symbol1, _start_date, _end_date, _n-1);
-  _stock_data2 = fetchStockData(_symbol2, _start_date, _end_date, _n-1);
+  _stock_data1 = fetchStockData(_symbol1, _start_date, _end_date, _n-1, "data1");
+  _stock_data2 = fetchStockData(_symbol2, _start_date, _end_date, _n-1, "data2");
 }
 
 void PAIRS2::runStrategy()
@@ -53,7 +53,8 @@ void PAIRS2::runStrategy()
             double z_score = (spread - rolling_mean)/rolling_std_dev;
             int curr_position = 0;
             int flag = 0;
-            if( z_score > _threshold && position > -_x){
+            if( z_score > _threshold && z_score < _stop_loss_threshold && position > -_x){
+            // if( z_score > _threshold && position > -_x){    
                 curr_position = -1;
                 if(buy_orders.size()>0){
                     auto it = buy_orders.begin();
@@ -103,7 +104,7 @@ void PAIRS2::runStrategy()
                 }
                 
             }
-            else if( z_score < -_threshold && position < _x){
+            else if( z_score < -_threshold && z_score > -_stop_loss_threshold && position < _x){
                 curr_position = 1;
                 if(sell_orders.size()>0){
                     auto it = sell_orders.begin();
@@ -198,6 +199,5 @@ void PAIRS2::runStrategy()
     }
     spread = _stock_data1[_stock_data1.size()-1].close - _stock_data2[_stock_data2.size()-1].close;
     pnl = pnl + position*spread;
-    _final_pnl = pnl;
-    std::cout << "Final PnL: " << pnl << std::endl;    
+    _final_pnl = pnl;   
 }
