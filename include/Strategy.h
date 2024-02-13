@@ -27,9 +27,9 @@ class Strategy
     // void createPlot(std::vector<double> &data1, std::vector<double> &data2, std::vector<double> &data3, 
     //                       std::string label1, std::string label2, std::string label3, std::string filename);
     // void createPlot2(std::vector<double> &data1, std::vector<double> &data2, std::string label1, std::string label2, std::string filename);
-    void writeOrderStats(std::string date, bool is_buy, int quantity, int price);
+    void writeOrderStats(std::string date, bool is_buy, int quantity, double price);
     void writeOrderStats(const StockData &stk, bool is_buy, int quantity);
-    void writeOrderStats2(std::string date, bool is_buy, int quantity, int price);
+    void writeOrderStats2(std::string date, bool is_buy, int quantity, double price);
     void writeOrderStats2(const StockData &stk, bool is_buy, int quantity);
     void writeDailyCashFlow(std::string date, double cashflow);
 

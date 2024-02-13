@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <iomanip>
 
 Strategy::Strategy () :
   _final_pnl(0.0)
@@ -79,15 +80,15 @@ void Strategy::writeToPNLFile(double pnl)
     return;
   }
 
-  finalPnLFile << _final_pnl << std::endl;
+  finalPnLFile << std::fixed << std::setprecision(2) << _final_pnl << std::endl;
   finalPnLFile.close();
 }
 
-void Strategy::writeOrderStats(std::string date, bool is_buy, int quantity, int price)
+void Strategy::writeOrderStats(std::string date, bool is_buy, int quantity, double price)
 {
   std::string direction = is_buy ? "BUY" : "SELL", sep = ",";
 
-  _order_statistics << date << sep << direction << sep << quantity << sep << price << std::endl;
+  _order_statistics << std::fixed << std::setprecision(2) << date << sep << direction << sep << quantity << sep << price << std::endl;
 }
 
 void Strategy::writeOrderStats(const StockData& stk, bool is_buy, int quantity)
@@ -95,11 +96,11 @@ void Strategy::writeOrderStats(const StockData& stk, bool is_buy, int quantity)
   writeOrderStats(stk.date, is_buy, quantity, stk.close);
 }
 
-void Strategy::writeOrderStats2(std::string date, bool is_buy, int quantity, int price)
+void Strategy::writeOrderStats2(std::string date, bool is_buy, int quantity, double price)
 {
   std::string direction = is_buy ? "BUY" : "SELL", sep = ",";
 
-  _order_statistics_2 << date << sep << direction << sep << quantity << sep << price << std::endl;
+  _order_statistics_2 << std::fixed << std::setprecision(2) << date << sep << direction << sep << quantity << sep << price << std::endl;
 }
 
 void Strategy::writeOrderStats2(const StockData& stk, bool is_buy, int quantity)
@@ -111,7 +112,7 @@ void Strategy::writeDailyCashFlow(std::string date, double cashflow)
 {
   std::string sep = ",";
 
-  _daily_cashflow << date << sep << cashflow << std::endl;
+  _daily_cashflow << std::fixed << std::setprecision(2) << date << sep << cashflow << std::endl;
 }
 
 void Strategy::writeToFiles()
