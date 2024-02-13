@@ -9,6 +9,7 @@ Strategy::Strategy () :
 {
   _daily_cashflow << "Date,Cashflow\n";
   _order_statistics << "Date,Order_dir,Quantity,Price\n";
+  _order_statistics_2 << "Date,Order_dir,Quantity,Price\n";
 }
 
 std::string Strategy::convertDateFormat(const std::string& originalDate) {
