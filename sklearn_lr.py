@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 
 # Read CSV file
-df = pd.read_csv('SBIN.csv')
+df = pd.read_csv('./data/LR_train_SBIN.csv')
 
 # Define features and target variable
 X = df[['CLOSE', 'OPEN', 'VWAP', 'LOW', 'HIGH', 'NO OF TRADES']]
@@ -30,3 +30,15 @@ model.fit(X_lagged, y)
 print("Learned Parameters:")
 print("Intercept (β0):", model.intercept_)
 print("Coefficients (β1-β7):", model.coef_)
+
+test_df = pd.read_csv('./data/LR_test_SBIN.csv')
+X_test = test_df[['CLOSE', 'OPEN', 'VWAP', 'LOW', 'HIGH', 'NO OF TRADES']]
+
+X_test_lagged = X_test.shift(1)
+X_test_lagged.columns = [col + "_lagged" for col in X_test.columns]
+X_test_lagged['OPEN'] = test_df['OPEN']
+X_test_lagged = X_test_lagged.dropna()
+
+print(X_test_lagged)
+y_test = model.predict(X_test_lagged)
+print(y_test)

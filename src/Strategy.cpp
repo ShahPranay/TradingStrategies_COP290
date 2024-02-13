@@ -3,7 +3,8 @@
 #include <sstream>
 #include <iostream>
 
-Strategy::Strategy ()
+Strategy::Strategy () :
+  _final_pnl(0.0)
 {
   _daily_cashflow << "Date,Cashflow\n";
   _order_statistics << "Date,Order_dir,Quantity,Price\n";
