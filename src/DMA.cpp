@@ -64,5 +64,5 @@ void DMA::runStrategy()
     pnl = pnl + position*_stock_data[_stock_data.size()-1].close;
     _final_pnl = pnl;
 
-    createPlot(price, lower_bound, upper_bound, "Price", "Mean - p*std. dev", "Mean + p*std. dev", "DMA");
+    // createPlot(price, lower_bound, upper_bound, "Price", "Mean - p*std. dev", "Mean + p*std. dev", "DMA");
 }

@@ -85,5 +85,5 @@ void ADX::runStrategy()
     pnl = pnl + position*_stock_data[_stock_data.size()-1].close;
     _final_pnl = pnl;
 
-    createPlot2(price, ADX_values, "Price", "ADX", "ADX");
+    // createPlot2(price, ADX_values, "Price", "ADX", "ADX");
 }

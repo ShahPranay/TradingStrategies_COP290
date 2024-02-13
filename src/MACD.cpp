@@ -58,5 +58,5 @@ void MACD::runStrategy()
     pnl = pnl + position*_stock_data[_stock_data.size()-1].close;
     _final_pnl = pnl;
 
-    createPlot(price, MACD_values, signal_values, "Price", "MACD", "Signal", "MACD");
+    // createPlot(price, MACD_values, signal_values, "Price", "MACD", "Signal", "MACD");
 }

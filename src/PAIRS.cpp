@@ -72,5 +72,5 @@ void PAIRS::runStrategy()
     pnl = pnl + position*spread;
     _final_pnl = pnl;
 
-    createPlot2(spread_values, z_score_values, "Spread", "Z-Score*100", "Pairs");
+    // createPlot2(spread_values, z_score_values, "Spread", "Z-Score*100", "Pairs");
 }

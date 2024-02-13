@@ -66,5 +66,5 @@ void RSI::runStrategy()
     pnl = pnl + position*_stock_data[_stock_data.size()-1].close;
     _final_pnl = pnl;
 
-    createPlot2(price, RSI_values, "Price", "RSI", "RSI");
+    // createPlot2(price, RSI_values, "Price", "RSI", "RSI");
 }

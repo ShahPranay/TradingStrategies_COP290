@@ -174,5 +174,5 @@ void AMA::runStrategy()
     pnl = pnl + position*_stock_data[_stock_data.size()-1].close;
     _final_pnl = pnl;
 
-    createPlot(price, lower_band_values, upper_band_values, "Price", "Lower AMA Band", "Upper AMA Band", "AMA");
+    // createPlot(price, lower_band_values, upper_band_values, "Price", "Lower AMA Band", "Upper AMA Band", "AMA");
 }

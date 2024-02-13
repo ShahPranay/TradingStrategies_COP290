@@ -79,5 +79,5 @@ void TSI::runStrategy()
     pnl = pnl + position*_stock_data[_stock_data.size()-1].close;
     _final_pnl = pnl;
 
-    createPlot(price, TSI_values, signal_values, "Price", "TSI", "Signal", "TSI");
+    // createPlot(price, TSI_values, signal_values, "Price", "TSI", "Signal", "TSI");
 }
