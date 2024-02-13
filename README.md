@@ -47,5 +47,5 @@ of data has also been parallelized to increase efficiency.
 ### Pairs Trading
 ![](./Plots/Pairs_plot.png)
 
-### Stop-Loss in Pairs Rrading
+### Stop-Loss in Pairs Trading
 ![](./Plots/Pairs2_plot.png)

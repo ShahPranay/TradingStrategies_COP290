@@ -16,7 +16,7 @@ bool FisherTransform::isPositiveCrossover()
 {
   if(_fisher_values.size() < _ma_window_size)
     return false;
-  if(_fisher_values.front() > _cur_ma && !_is_above_ma)
+  if(_fisher_values.back() > _cur_ma && !_is_above_ma)
     return true;
   else return false;
 }
@@ -25,9 +25,25 @@ bool FisherTransform::isNegativeCrossover()
 {
   if(_fisher_values.size() < _ma_window_size)
     return false;
-  if(_fisher_values.front() < _cur_ma && _is_above_ma)
+  if(_fisher_values.back() < _cur_ma && _is_above_ma)
     return true;
   else return false;
+}
+
+
+void FisherTransform::update_Ma()
+{
+  int ctr = 0;
+  auto itr = _fisher_values.rbegin();
+  _cur_ma = 0.0;
+
+  while(itr != _fisher_values.rend() && ctr < _ma_window_size){
+    _cur_ma += *itr;
+    itr++;
+    ctr++;
+  }
+
+  _cur_ma /= ctr;
 }
 
 void FisherTransform::addFisherTransform(const StockData &data)
@@ -36,21 +52,15 @@ void FisherTransform::addFisherTransform(const StockData &data)
   const double MIN_VALUE = -0.99999;
 
   // Calculate X value using the close price of the day
-  double X = 0.5 * std::log((1 + (data.close - data.low) / (1 + (data.high - data.close))));
+  double X = (data.close - data.low)/(data.high - data.low);
 
   // Apply Fisher Transform formula
-  double value = 0.5 * std::log((1 + X) / (1 - X));
-  value = std::max(std::min(value, MAX_VALUE), MIN_VALUE);
+  if(1.0 - X > 0.0000001){
+    double value = 0.5 * std::log((1 + X) / (1 - X));
+    value = std::max(std::min(value, MAX_VALUE), MIN_VALUE);
+    _fisher_values.push_back(value);
 
-  std::cout << value << std::endl;
-
-  _cur_ma = _cur_ma + ((value - _cur_ma) / _fisher_values.size());
-  _fisher_values.push(value);
-  
-  if(_fisher_values.size() > _ma_window_size){
-    double sval = _fisher_values.back();
-    _cur_ma = ((_cur_ma * _fisher_values.size()) - sval) / (_fisher_values.size() - 1);
-    _fisher_values.pop();
+    update_Ma();
   }
 }
 
@@ -87,6 +97,8 @@ void FisherTransform::runStrategy()
 
     addFisherTransform(_stock_data[i]);
     writeDailyCashFlow(_stock_data[i].date, _final_pnl);
+    if(_fisher_values.size() > 0)
+      std::cout << _cur_ma << " " << _fisher_values.back() << "\n";
   }
 
   _final_pnl += _cur_position * _stock_data.back().close;

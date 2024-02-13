@@ -9,12 +9,13 @@ class FisherTransform : public Strategy {
     void addFisherTransform(const StockData &data);
     void buyStock(const StockData &data);
     void sellStock(const StockData &data);
+    void update_Ma();
 
     virtual void runStrategy();
   private:
     int _max_position, _cur_position, _ma_window_size;
     std::vector<StockData> _stock_data;
-    std::queue<double> _fisher_values;
+    std::vector<double> _fisher_values;
     double _cur_ma;
     bool _is_above_ma;
 };
