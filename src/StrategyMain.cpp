@@ -184,6 +184,7 @@ int main(int argc, char *argv[]) {
     Strategy *strat = (Strategy *) new TSI(symbol, start_date, end_date, x);
     strat->runStrategy();
     strat->writeToFiles(); 
+  }
   else if(strategy == "FisherT")
   {
     if(argc < 7){
