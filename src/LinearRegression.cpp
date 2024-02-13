@@ -72,26 +72,29 @@ void LinearRegression::runStrategy()
   Matrix<double> X_t = X.transpose();
   Matrix<double> params = (X_t * X).inverse() * (X_t * y);
 
-  std::cout << "Params:\n";
-  params.print();
-  std::cout << "\n";
-
   int n_testdata = _stock_data.size();
 
   _final_pnl = 0.0;
   _cur_position = 0;
+
   for(int i = 1; i < n_testdata; i++){
     Matrix<double> prediction = stockDataToMat(_stock_data[i - 1], _stock_data[i]) * params;
-    std::cout << _stock_data[i].date << ", Prediction: " << prediction.get(0,0) << ", Actual val: " << _stock_data[i].close << std::endl;
+    std::cout << prediction.get(0,0) << ", ";
+    /* std::cout << _stock_data[i].date << ", Prediction: " << prediction.get(0,0) << ", Actual val: " << _stock_data[i].close << std::endl; */
     double pdiff = percentDifference(prediction.get(0,0), _stock_data[i].close);
 
-    if(pdiff > 0 && pdiff >= _percent_diff){
+    if(pdiff > 0 && pdiff >= _percent_diff)
       buyStock(_stock_data[i]);
-    }
-    else if(pdiff < 0 && -pdiff >= _percent_diff){
+    else if(pdiff < 0 && -pdiff >= _percent_diff)
       sellStock(_stock_data[i]);
-    }
+
     writeDailyCashFlow(_stock_data[i].date, _final_pnl);
   }
+
+  std::cout << std::endl;
+
+  for(int i = 1; i < n_testdata; i++)
+    std::cout <<"\""<< _stock_data[i].date << "\", ";
+  std::cout << "\n";
   _final_pnl += _cur_position * _stock_data.back().close;
 }
