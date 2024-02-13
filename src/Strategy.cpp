@@ -137,8 +137,8 @@ void Strategy::writeToFiles()
 void Strategy::writeTo2Files()
 {
   std::ofstream cash_flow_file("daily_cashflow.csv");
-  std::ofstream order_statistics_file1("order_statistics1.csv");
-  std::ofstream order_statistics_file2("order_statistics2.csv");
+  std::ofstream order_statistics_file1("order_statistics_1.csv");
+  std::ofstream order_statistics_file2("order_statistics_2.csv");
 
   if (!cash_flow_file.is_open() || !order_statistics_file1.is_open() || !order_statistics_file2.is_open()) {
     std::cerr << "Error: Failed to open files for writing\n";
