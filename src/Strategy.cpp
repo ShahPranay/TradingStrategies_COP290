@@ -136,7 +136,7 @@ void Strategy::writeToFiles()
 
 void Strategy::writeTo2Files()
 {
-  std::ofstream cash_flow_file("daily_pnl.csv");
+  std::ofstream cash_flow_file("daily_cashflow.csv");
   std::ofstream order_statistics_file1("order_statistics1.csv");
   std::ofstream order_statistics_file2("order_statistics2.csv");
 
