@@ -30,19 +30,23 @@ void RSI::runStrategy()
     double avg_loss = 0.0;
     double pnl = 0.0;
 
+    std::vector<double> price;
+    std::vector<double> RSI_values;
+
     for(int i = 1; i < _stock_data.size(); i++){
         if(i<_n){
             gain_sum += std::max(_stock_data[i].close-_stock_data[i-1].close, 0.0);
             loss_sum -= std::min(_stock_data[i].close-_stock_data[i-1].close, 0.0);
         }
         else{
+            price.push_back(_stock_data[i].close);
             gain_sum += std::max(_stock_data[i].close-_stock_data[i-1].close, 0.0);
             loss_sum -= std::min(_stock_data[i].close-_stock_data[i-1].close, 0.0);
             avg_gain = gain_sum/_n;
             avg_loss = loss_sum/_n;
             double RS = avg_gain/avg_loss;
             double RSI = 100 - (100/(1+RS));
-
+            RSI_values.push_back(RSI);
             if( RSI < _oversold_threshold && position <_x){
                 writeOrderStats(_stock_data[i], true, 1);
                 pnl -= _stock_data[i].close;
@@ -61,4 +65,6 @@ void RSI::runStrategy()
     
     pnl = pnl + position*_stock_data[_stock_data.size()-1].close;
     _final_pnl = pnl;
+
+    createPlot2(price, RSI_values, "Price", "RSI", "RSI");
 }

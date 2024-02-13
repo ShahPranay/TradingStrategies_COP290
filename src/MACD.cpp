@@ -24,7 +24,12 @@ void MACD::runStrategy()
     double signal = 0.0;
     double pnl = 0.0;
 
+    std::vector<double> price;
+    std::vector<double> MACD_values;
+    std::vector<double> signal_values;
+
     for(int i = 0; i < _stock_data.size(); i++){
+        price.push_back(_stock_data[i].close);
         if(i==0){
             short_EWM = _stock_data[i].close;
             long_EWM = _stock_data[i].close;
@@ -33,7 +38,9 @@ void MACD::runStrategy()
             short_EWM = ((2*(_stock_data[i].close - short_EWM))/(13)) + short_EWM;
             long_EWM = ((2*(_stock_data[i].close - long_EWM))/(27)) + long_EWM;
             MACD = short_EWM - long_EWM;
+            MACD_values.push_back(MACD);
             signal = ((2*(MACD - signal))/(10)) + signal;
+            signal_values.push_back(signal);
             if(MACD > signal && position < _x){
                 writeOrderStats(_stock_data[i], true, 1);
                 pnl -= _stock_data[i].close;
@@ -50,4 +57,6 @@ void MACD::runStrategy()
 
     pnl = pnl + position*_stock_data[_stock_data.size()-1].close;
     _final_pnl = pnl;
+
+    createPlot(price, MACD_values, signal_values, "Price", "MACD", "Signal", "MACD");
 }

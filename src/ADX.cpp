@@ -32,10 +32,14 @@ void ADX::runStrategy()
     double ADX = 0.0;
     double pnl = 0.0;
 
+    std::vector<double> price;
+    std::vector<double> ADX_values;
+
     for(int i =2; i<_stock_data.size(); i++){
         TR = std::max(_stock_data[i].high - _stock_data[i].low, std::max(_stock_data[i].high - _stock_data[i-1].close, _stock_data[i-1].close - _stock_data[i].low));
         DM_plus = std::max(0.0, _stock_data[i].high - _stock_data[i-1].high);
         DM_minus = std::max(0.0, _stock_data[i].low - _stock_data[i-1].low);
+        price.push_back(_stock_data[i].close);
         if(i==2){
             ATR = TR;
             DI_plus = DM_plus/ATR;
@@ -64,7 +68,7 @@ void ADX::runStrategy()
             }
             ADX = ((2*(DX - ADX))/(_n+1)) + ADX;
         }
-
+        ADX_values.push_back(ADX);
         if(ADX > _adx_threshold && position <_x){
             writeOrderStats(_stock_data[i], true, 1);
             pnl -= _stock_data[i].close;
@@ -80,4 +84,6 @@ void ADX::runStrategy()
 
     pnl = pnl + position*_stock_data[_stock_data.size()-1].close;
     _final_pnl = pnl;
+
+    createPlot2(price, ADX_values, "Price", "ADX", "ADX");
 }

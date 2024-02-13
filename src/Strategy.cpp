@@ -160,3 +160,65 @@ double Strategy::getFinalPnl()
 {
   return _final_pnl;
 }
+
+void Strategy::createPlot(std::vector<double> &data1, std::vector<double> &data2, std::vector<double> &data3, 
+                          std::string label1, std::string label2, std::string label3, std::string filename = "data")
+{
+  FILE *gnuplotPipe = popen("gnuplot -persistent", "w");
+    
+    std::ofstream dataFile1("data/data1.txt");
+    std::ofstream dataFile2("data/data2.txt");
+    std::ofstream dataFile3("data/data3.txt");
+
+    for (size_t i = 0; i < data1.size(); ++i) {
+        dataFile1 << i << " " << data1[i] << std::endl;
+        dataFile2 << i << " " << data2[i] << std::endl;
+        dataFile3 << i << " " << data3[i] << std::endl;
+    }
+
+    dataFile1.close();
+    dataFile2.close();
+    dataFile3.close();
+
+    fprintf(gnuplotPipe, "set terminal pngcairo enhanced color size 1200,900\n");
+    fprintf(gnuplotPipe, "set output 'Plots/%s_plot.png'\n", filename.c_str());
+
+    // Plot the data using Gnuplot
+    fprintf(gnuplotPipe, "plot 'data/data1.txt' with lines title '%s', \
+                          'data/data2.txt' with lines title '%s', \
+                          'data/data3.txt' with lines title '%s'\n", label1.c_str(), label2.c_str(), label3.c_str());
+
+    fflush(gnuplotPipe);
+
+    // Close the Gnuplot pipe
+    pclose(gnuplotPipe);
+}
+
+void Strategy::createPlot2(std::vector<double> &data1, std::vector<double> &data2, 
+                          std::string label1, std::string label2, std::string filename = "data")
+{
+  FILE *gnuplotPipe = popen("gnuplot -persistent", "w");
+    
+    std::ofstream dataFile1("data/data1.txt");
+    std::ofstream dataFile2("data/data2.txt");
+
+    for (size_t i = 0; i < data1.size(); ++i) {
+        dataFile1 << i << " " << data1[i] << std::endl;
+        dataFile2 << i << " " << data2[i] << std::endl;
+    }
+
+    dataFile1.close();
+    dataFile2.close();
+
+    fprintf(gnuplotPipe, "set terminal pngcairo enhanced color size 1200,900\n");
+    fprintf(gnuplotPipe, "set output 'Plots/%s_plot.png'\n", filename.c_str());
+
+    // Plot the data using Gnuplot
+    fprintf(gnuplotPipe, "plot 'data/data1.txt' with lines title '%s', \
+                          'data/data2.txt' with lines title '%s'\n", label1.c_str(), label2.c_str());
+
+    fflush(gnuplotPipe);
+
+    // Close the Gnuplot pipe
+    pclose(gnuplotPipe);
+}

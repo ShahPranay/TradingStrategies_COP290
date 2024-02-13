@@ -36,11 +36,16 @@ void AMA::runStrategy()
     std::queue<int> buy_queue;
     std::queue<int> sell_queue;
 
+    std::vector<double> price;
+    std::vector<double> lower_band_values;
+    std::vector<double> upper_band_values;
+
     for(int i =1; i<_stock_data.size(); i++){
         if(i<_n){
             volatility += abs(_stock_data[i].close - _stock_data[i-1].close);
         }
         else{
+            
             volatility += abs(_stock_data[i].close - _stock_data[i-1].close);
             double direction = abs(_stock_data[i].close - _stock_data[i-_n].close);
             double ER = 0;
@@ -65,6 +70,7 @@ void AMA::runStrategy()
                 }
                 continue;
             }
+            price.push_back(_stock_data[i].close);
             if(i>_n){
                 double c = (2*ER)/(1+_c2);
                 SF = SF*(1-_c1) + ((_c1*(c-1))/(c+1));
@@ -76,7 +82,13 @@ void AMA::runStrategy()
             else{
                 AMA = AMA+ SF*(_stock_data[i].close - AMA);
             }
-
+            lower_band_values.push_back(AMA*(1-(_p/100)));
+            upper_band_values.push_back(AMA*(1+(_p/100)));
+            if(AMA > 10000 || AMA < -10000){
+                price.pop_back();
+                lower_band_values.pop_back();
+                upper_band_values.pop_back();
+            }
             if(_stock_data[i].close > AMA*(1+(_p/100)) && position < _x){
                 AMA_flag = 1;
             }
@@ -161,4 +173,6 @@ void AMA::runStrategy()
 
     pnl = pnl + position*_stock_data[_stock_data.size()-1].close;
     _final_pnl = pnl;
+
+    createPlot(price, lower_band_values, upper_band_values, "Price", "Lower AMA Band", "Upper AMA Band", "AMA");
 }

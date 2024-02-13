@@ -8,6 +8,7 @@
 #include "PAIRS.h"
 #include "BestOfAll.h"
 #include "PAIRS2.h"
+#include "TSI.h"
 #include <string>
 #include <iostream>
 
@@ -168,6 +169,20 @@ int main(int argc, char *argv[]) {
 
     BestOfAll strat(symbol, start_date, end_date);
     strat.runStrategy();
+  }
+  else if(strategy == "TSI")
+  {
+   if (argc < 6) {
+      std::cerr << "Usage: " << argv[0] << " strategy symbol x \
+        start_date end_date";
+      return 1;
+    }
+    std::string symbol = argv[2];
+    int x = std::stoi(argv[3]);
+    std::string start_date = argv[4], end_date = argv[5];
+    Strategy *strat = (Strategy *) new TSI(symbol, start_date, end_date, x);
+    strat->runStrategy();
+    strat->writeToFiles(); 
   }
 
   return 0;
