@@ -11,15 +11,13 @@ Strategy::Strategy () :
 }
 
 std::string Strategy::convertDateFormat(const std::string& originalDate) {
-  // Assuming the original format is "dd-mm-yyyy"
+  // Assuming the original format is "yyyy-mm-dd"
   // Convert it to "dd/mm/yyyy"
-  std::string convertedDate = originalDate;
-  size_t dashPos = convertedDate.find('-');
-  while (dashPos != std::string::npos) {
-    convertedDate.replace(dashPos, 1, "/");
-    dashPos = convertedDate.find('-', dashPos + 1);
-  }
-  return convertedDate;
+  std::string year = originalDate.substr(0, 4);
+  std::string month = originalDate.substr(5, 2);
+  std::string day = originalDate.substr(8, 2);
+
+  return day + "/" + month + "/" + year;
 }
 
 std::vector<StockData> Strategy::fetchStockData(std::string symbol, std::string start_date, std::string end_date, int n, std::string filename = "data")
