@@ -7,6 +7,7 @@
 #include "ADX.h"
 #include "PAIRS.h"
 #include "BestOfAll.h"
+#include "FisherTransform.h"
 #include "PAIRS2.h"
 #include "TSI.h"
 #include <string>
@@ -36,7 +37,6 @@ int main(int argc, char *argv[]) {
 
     Strategy *strat = (Strategy *) new LinearRegression(symbol, train_start_date, train_end_date, start_date, end_date, x, p);
     strat->runStrategy();
-    strat->writeToFiles();
     strat->writeToFiles();
   }
   else if(strategy == "BASIC")
@@ -163,6 +163,7 @@ int main(int argc, char *argv[]) {
   {
     if (argc < 5){
       std::cerr << "Usage: " << argv[0] << " strategy symbol start_date end_date";
+      return 1;
     }
     std::string symbol = argv[2];
     std::string start_date = argv[3], end_date = argv[4];
@@ -183,6 +184,19 @@ int main(int argc, char *argv[]) {
     Strategy *strat = (Strategy *) new TSI(symbol, start_date, end_date, x);
     strat->runStrategy();
     strat->writeToFiles(); 
+  else if(strategy == "FisherT")
+  {
+    if(argc < 7){
+      std::cerr << "Usage: " << argv[0] << " strategy symbol x window_size start_date end_date";
+      return 1;
+    }
+    std::string symbol = argv[2];
+    int x = std::stoi(argv[3]), window_size = std::stoi(argv[4]);
+    std::string start_date = argv[5], end_date = argv[6];
+
+    FisherTransform strat(symbol, start_date, end_date, x, window_size);
+    strat.runStrategy();
+    strat.writeToFiles();
   }
 
   return 0;

@@ -18,6 +18,9 @@ if __name__ == "__main__":
 
     x = n/2
     new_from_date = from_date - timedelta(days=n+x)
+
+    print(symbol, n, new_from_date, to_date, filename)
+
     df = stock_df(symbol=symbol, from_date=new_from_date,
                 to_date=to_date, series="EQ")
     df = df.iloc[::-1]

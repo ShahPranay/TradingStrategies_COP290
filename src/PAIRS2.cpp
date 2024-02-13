@@ -24,8 +24,8 @@ PAIRS2::PAIRS2 (std::string symbol1,
   _threshold(threshold),
   _stop_loss_threshold(stop_loss_threshold)
 {
-  _stock_data1 = fetchStockData(_symbol1, _start_date, _end_date, _n-1, "data1");
-  _stock_data2 = fetchStockData(_symbol2, _start_date, _end_date, _n-1, "data2");
+  _stock_data1 = fetchStockData(_symbol1, _start_date, _end_date, _n-1, "Pairs2_1");
+  _stock_data2 = fetchStockData(_symbol2, _start_date, _end_date, _n-1, "Pairs2_2");
 }
 
 void PAIRS2::runStrategy()
